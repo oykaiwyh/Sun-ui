@@ -3,7 +3,13 @@ import Button , { ButtonType , ButtonSize } from './components/button/button'
 import Menu  from './components/Menu/menu'
 import MenuItem  from './components/Menu/menuItem'
 import SubMenu  from './components/Menu/subMenu'
+import Icon  from './components/Icon/icon'
+import { library } from '@fortawesome/fontawesome-svg-core'
+// import { faCheckSquare, faCoffee } from '@fortawesome/free-solid-svg-icons'
+import { fas } from '@fortawesome/free-solid-svg-icons' // fas为所有图标的集合
 
+// library.add( faCheckSquare, faCoffee)
+library.add( fas )
 
 const App:React.FC = () =>{
   return (
@@ -23,7 +29,7 @@ const App:React.FC = () =>{
       </div>
       <div>
         <h2>Menu 组件</h2>
-        <Menu mode='vertical'>
+        <Menu mode='vertical' onSelect={(index) => {alert(index)}} defaultOpenSubMenus={['4']}>
           <MenuItem> 0 </MenuItem>
           <MenuItem  disabled> 1 </MenuItem>
           <MenuItem > 2 </MenuItem>
@@ -33,6 +39,10 @@ const App:React.FC = () =>{
             <MenuItem> 5 </MenuItem>
           </SubMenu>
         </Menu>
+      </div>
+      <div>
+        <h2>Icon 组件</h2>
+        <Icon icon="coffee" theme="danger" size="10x"></Icon>
       </div>
 
     </div>

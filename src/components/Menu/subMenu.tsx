@@ -5,7 +5,7 @@ import { MenuItemProps } from './menuItem'
 import { clearTimeout } from 'timers'
 
 export interface SubMenusProps {
-    index ? : number;
+    index ? : string;
     title ? : string;
     className ? : string;
 }
@@ -14,7 +14,11 @@ export interface SubMenusProps {
 
 const SubMenu:React.FC<SubMenusProps > = ({index , title , children , className}) => {
     const context = useContext(MenuContext)
-    const [menuOpen ,setMenuOpen ] =useState(false)
+    const openedSubMenus = context.defaultOpenSubMenus as Array<string>
+    const isOpend = ( index && context.mode === 'vertical') ? openedSubMenus.includes(index) : false
+
+
+    const [menuOpen ,setMenuOpen ] =useState(isOpend)
     const classes = classNames('menu-item submenu-item' , className , {
         'is-active': context.index === index
     })
@@ -39,10 +43,12 @@ const SubMenu:React.FC<SubMenusProps > = ({index , title , children , className}
         const submenuclasses = classNames('sunui-submenu' , {
             'submenu-opened': menuOpen
         })
-        const childrenCompont = React.Children.map(children,(child,index) => {
+        const childrenCompont = React.Children.map(children,(child,subindex) => {
             const childrenElement = child as React.FunctionComponentElement<MenuItemProps>
             if (childrenElement.type.displayName === 'MenuItem') {
-                return childrenElement
+                return React.cloneElement(childrenElement,{
+                    index:`${index}-${subindex}`
+                })
             }else{
                 console.error("Waring : SubMenu has a child which is not MenuItem");
             }
