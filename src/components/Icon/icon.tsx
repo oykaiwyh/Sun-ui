@@ -13,7 +13,7 @@ export interface IconProps extends FontAwesomeIconProps {
 
 const Icon:React.FC<IconProps> = (props) => {
     const { className , theme , ...restProps } = props
-    const classes  = classNames('sunui-icon', classNames , {
+    const classes  = classNames('sunui-icon', className , {
         [`icon-${theme}`]:theme
     })
     return (

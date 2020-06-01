@@ -3,6 +3,9 @@ import classNames from 'classnames'
 import { MenuContext } from './menu'
 import { MenuItemProps } from './menuItem'
 import { clearTimeout } from 'timers'
+import Icon from '../Icon/icon'
+import { CSSTransition } from 'react-transition-group'
+import Transition from '../Transition/transition'
 
 export interface SubMenusProps {
     index ? : string;
@@ -20,7 +23,10 @@ const SubMenu:React.FC<SubMenusProps > = ({index , title , children , className}
 
     const [menuOpen ,setMenuOpen ] =useState(isOpend)
     const classes = classNames('menu-item submenu-item' , className , {
-        'is-active': context.index === index
+        'is-active': context.index === index , 
+        'is-opened' : menuOpen ,
+        'is-vertical' : context.mode === 'vertical'
+
     })
     const handlClick = (e:React.MouseEvent) =>{
         e.preventDefault()
@@ -55,16 +61,26 @@ const SubMenu:React.FC<SubMenusProps > = ({index , title , children , className}
         })
         return (
             // <ul className='sunui-submenu'>
-            <ul className={submenuclasses}>
-                {childrenCompont}
-            </ul>
+            // <CSSTransition in={menuOpen} timeout={300} classNames="zoom-in-top" appear unmountOnExit>
+            //     <ul className={submenuclasses}>
+            //         {childrenCompont}
+            //     </ul>
+            // </CSSTransition>
+            // 只能有一个根节点
+            <Transition in={menuOpen} timeout={300} classNames="zoom-in-top" unmountOnExit appear>
+                <ul className={submenuclasses}>
+                    {childrenCompont}
+                </ul>
+            </Transition>
+
         )
     }
     return (
         <li key={index} className={classes} {...hoverEvents}>
             {/* <div className='submenu-title' onClick={handlClick}> */}
-            <div className='submenu-title'  {...clickEvents}>
+            <div className="submenu-title" {...clickEvents}>
                 {title}
+                <Icon icon="angle-down" className="arrow-icon"/>
             </div>
             {renderChildren()}
         </li>
